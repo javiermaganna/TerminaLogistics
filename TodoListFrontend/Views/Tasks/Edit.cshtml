@@ -1,0 +1,76 @@
+﻿@model TodoListFrontend.Models.TareaDTO
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Editar Tarea</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="needs-validation" novalidate>
+        <!-- Título -->
+        <div class="mb-3">
+            <label for="title" class="form-label">Título:</label>
+            <input asp-for="Title" id="title" name="Title" class="form-control" required />
+            <div class="invalid-feedback">
+                Por favor, ingresa un título para la tarea.
+            </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción:</label>
+            <textarea asp-for="Description" id="description" name="Description" class="form-control" rows="4" required></textarea>
+            <div class="invalid-feedback">
+                Por favor, ingresa una descripción para la tarea.
+            </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="mb-3">
+            <label for="isCompleted" class="form-label">Estado:</label>
+            @Html.DropDownListFor(m => m.IsCompleted,
+                     new List<SelectListItem>
+            {
+            new SelectListItem { Text = "Pendiente", Value = "false", Selected = !Model.IsCompleted },
+            new SelectListItem { Text = "Completada", Value = "true", Selected = Model.IsCompleted }
+            },
+                     new { @class = "form-select", required = "required" }
+                     )
+            <div class="invalid-feedback">
+                Por favor, selecciona un estado para la tarea.
+            </div>
+        </div>
+
+
+        <!-- Botón de Actualizar Tarea -->
+        <div class="d-grid">
+            <button type="submit" class="btn btn-warning">Actualizar Tarea</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Validación de formulario personalizada
+    (() => {
+        'use strict'
+
+        // Obtiene todos los formularios que necesitan validación
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Itera sobre cada uno de los formularios y les aplica la validación
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

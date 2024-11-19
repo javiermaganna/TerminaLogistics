@@ -1,0 +1,40 @@
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    height: 100%; /* Aseguramos que el html ocupe toda la altura */
+    margin: 0; /* Eliminamos márgenes adicionales */
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin: 0; /* Eliminamos márgenes en body */
+    display: flex;
+    flex-direction: column; /* Para que los elementos hijos sigan un flujo vertical */
+    min-height: 100%; /* Garantizamos que el contenido ocupe al menos el 100% */
+}
+
+main {
+    flex: 1; /* Aseguramos que el contenido principal ocupe el espacio disponible */
+}
+
+footer {
+    background-color: #000; /* Mantén o personaliza tu color */
+    color: #fff; /* Texto claro para contraste */
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto; /* Empuja el footer hacia el final */
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}

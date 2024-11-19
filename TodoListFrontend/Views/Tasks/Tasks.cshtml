@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TodoListFrontend.Models.TareaDTO>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Lista de Tareas</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success text-center">
+            @ViewBag.Message
+        </div>
+    }
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Description</td>
+                    <td>@(task.IsCompleted ? "Completada" : "Pendiente")</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@task.Id">Editar</a>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@task.Id">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Botón para agregar tarea -->
+    <div class="text-center mt-3">
+        <a class="btn btn-primary" asp-action="Create">Agregar Tarea</a>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta tarea?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <!-- El enlace de eliminación será generado dinámicamente con el taskId -->
+                    <a id="deleteLink" class="btn btn-danger" href="#">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuración del modal para pasar el ID de la tarea a eliminar
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var taskId = button.getAttribute('data-id'); // Obtiene el ID de la tarea
+        var deleteLink = document.getElementById('deleteLink');
+
+        // Actualiza la URL del enlace de eliminación para que apunte a la acción Delete en el controlador MVC
+            // Esto hará uso del método funcional Delete que ya maneja la autenticación
+            deleteLink.href = '@Url.Action("Delete", "Tasks")/' + taskId;
+        });
+</script>
+
